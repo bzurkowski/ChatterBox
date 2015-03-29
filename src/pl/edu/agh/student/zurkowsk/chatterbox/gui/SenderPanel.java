@@ -4,9 +4,9 @@ import javax.swing.*;
 
 public class SenderPanel extends JPanel {
 
-    private JButton sendButton;
+    JButton sendButton;
 
-    private JTextField messageTextField;
+    JTextField messageTextField;
 
     public SenderPanel()
     {
