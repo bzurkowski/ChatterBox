@@ -1,15 +1,20 @@
 package pl.edu.agh.student.zurkowsk.chatterbox.client;
 
 import org.jgroups.JChannel;
+import pl.edu.agh.student.zurkowsk.chatterbox.handlers.ChatMessageHandler;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
-public class ChatClient {
+public class ChatClient implements ChatRoomObserver {
 
     private Map<String, ChatRoom> chatRooms = null;
 
     private ChatRoom currentChatRoom = null;
+
+    private List<ChatRoomObserver> chatRoomObservers = null;
 
     private ChatManager chatManager = null;
 
@@ -20,6 +25,7 @@ public class ChatClient {
         this.nickname = nickname;
 
         chatRooms = new HashMap<String, ChatRoom>();
+        chatRoomObservers = new LinkedList<ChatRoomObserver>();
 
         chatManager = new ChatManager(this);
     }
@@ -31,6 +37,7 @@ public class ChatClient {
             chatRoom = chatRooms.get(chatRoomName);
         } else {
             chatRoom = new ChatRoom(chatRoomName);
+            chatRoom.addChatRoomObserver(this);
             chatRooms.put(chatRoomName, chatRoom);
         }
 
@@ -95,5 +102,16 @@ public class ChatClient {
 
     public String getNickname() {
         return nickname;
+    }
+
+    @Override
+    public void messageReceived(String channelName, ChatReceivedMessage message) {
+        for (ChatRoomObserver observer : chatRoomObservers) {
+            observer.messageReceived(channelName, message);
+        }
+    }
+
+    public void addChatRoomObserver(ChatRoomObserver observer) {
+        chatRoomObservers.add(observer);
     }
 }

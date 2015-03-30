@@ -17,11 +17,13 @@ public class ChatSelectionHandler extends ChatActionHandler implements ListSelec
     public void valueChanged(ListSelectionEvent e) {
         String chatRoomName = gui.getSelectedChatRoomName();
 
-        ChatRoom chatRoom = client.getChatRoom(chatRoomName);
+        ChatRoom currentChatRoom = client.getChatRoom(chatRoomName);
 
-        if (chatRoom != null) {
-            gui.updateUserList(chatRoom.getUsers());
-            client.setCurrentChatRoom(chatRoom);
+        if (currentChatRoom != null) {
+            gui.updateUserList(currentChatRoom.getUsers());
+            gui.updateMessages(currentChatRoom.getMessages());
+
+            client.setCurrentChatRoom(currentChatRoom);
         }
     }
 

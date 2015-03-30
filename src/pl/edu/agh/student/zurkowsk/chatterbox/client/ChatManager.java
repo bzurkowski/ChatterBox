@@ -10,7 +10,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatAction;
-import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatAction.*;
+import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatAction.ActionType;
+import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatAction.parseFrom;
 
 public class ChatManager extends ReceiverAdapter {
 

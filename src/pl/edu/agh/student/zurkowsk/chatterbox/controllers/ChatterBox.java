@@ -27,5 +27,7 @@ public class ChatterBox {
         gui.addChatRoomListSelectionListener(new ChatSelectionHandler(gui, client));
 
         gui.addSendButtonListener(new SendActionHandler(gui, client));
+
+        client.addChatRoomObserver(new ChatMessageHandler(gui, client));
     }
 }

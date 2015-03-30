@@ -112,4 +112,9 @@ public class ChatGUI extends JFrame {
     {
         messagesArea.updateMessages(messages);
     }
+
+    public void addMessage(ChatReceivedMessage message)
+    {
+        messagesArea.addMessage(message);
+    }
 }

@@ -1,17 +1,21 @@
 package pl.edu.agh.student.zurkowsk.chatterbox.client;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
+import org.jgroups.ReceiverAdapter;
 import pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatAction;
+import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatAction.parseFrom;
 import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatMessage;
 
-public class ChatRoom {
+public class ChatRoom extends ReceiverAdapter {
 
     private JChannel channel = null;
 
@@ -20,6 +24,8 @@ public class ChatRoom {
     private List<ChatAction> state = null;
 
     private List<ChatReceivedMessage> messages = null;
+
+    private List<ChatRoomObserver> chatRoomObservers;
 
     private List<String> users = null;
 
@@ -32,7 +38,9 @@ public class ChatRoom {
 
         messages = new LinkedList<ChatReceivedMessage>();
 
-        channel = ChannelFactory.buildChannel(channelName, channelName, null);
+        chatRoomObservers = new LinkedList<ChatRoomObserver>();
+
+        channel = ChannelFactory.buildChannel(channelName, channelName, this);
     }
 
     public boolean join(String username) throws Exception
@@ -64,9 +72,36 @@ public class ChatRoom {
 
         try {
             channel.send(new Message(null, null, messageBytes));
-            messages.add(new ChatReceivedMessage(username, messageContent));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void addChatRoomObserver(ChatRoomObserver observer)
+    {
+        chatRoomObservers.add(observer);
+    }
+
+    @Override
+    public void receive(Message msg) {
+        ChatMessage chatMessage = null;
+        try {
+            chatMessage = ChatMessage.parseFrom(msg.getRawBuffer());
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+
+        if (chatMessage == null) return;
+
+        String messageContent = chatMessage.getMessage();
+        String username = "Unknown";
+
+        ChatReceivedMessage message = new ChatReceivedMessage(username, messageContent);
+        messages.add(message);
+
+        for (ChatRoomObserver observer : chatRoomObservers) {
+            System.out.println("observer!");
+            observer.messageReceived(channelName, message);
         }
     }
 
@@ -96,5 +131,9 @@ public class ChatRoom {
 
     public List<ChatReceivedMessage> getMessages() {
         return messages;
+    }
+
+    public String getChannelName() {
+        return channelName;
     }
 }

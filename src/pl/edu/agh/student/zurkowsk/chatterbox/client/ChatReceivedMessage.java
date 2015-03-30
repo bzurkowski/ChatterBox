@@ -15,8 +15,8 @@ public class ChatReceivedMessage {
     public ChatReceivedMessage(String username, String content)
     {
         this.username = username;
-        this.content = content;
-        this.date = new Date();
+        this.content  = content;
+        this.date     = new Date();
     }
 
     @Override
