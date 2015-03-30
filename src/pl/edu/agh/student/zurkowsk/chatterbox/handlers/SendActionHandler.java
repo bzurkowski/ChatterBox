@@ -15,11 +15,12 @@ public class SendActionHandler extends ChatActionHandler implements ActionListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        new Thread(this).start();
     }
 
     @Override
     public void run() {
-
+        String messageContent = gui.getMessageContent();
+        client.sendMessage(messageContent);
     }
 }

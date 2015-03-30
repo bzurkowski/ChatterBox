@@ -6,14 +6,11 @@ import pl.edu.agh.student.zurkowsk.chatterbox.gui.ChatGUI;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("Welcome to ChatterBox!");
 
-        System.setProperty("java.net.preferIPv4Stack", "true");
-        System.setProperty("java.net.preferIPv6Stack", "false");
-
         ChatGUI gui = new ChatGUI();
-        ChatClient client = new ChatClient("Testowy");
+        ChatClient client = new ChatClient("Testowy2");
 
         ChatterBox chatterBox = new ChatterBox(gui, client);
 

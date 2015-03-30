@@ -6,10 +6,10 @@ import org.jgroups.stack.ProtocolStack;
 
 public class ChannelFactory {
 
-    public static JChannel buildChannel(String clientName, String hostName, ReceiverAdapter receiver) throws Exception {
+    public static JChannel buildChannel(String channelName, String hostName, ReceiverAdapter receiver) throws Exception {
         JChannel channel = new JChannel(false);
 
-        channel.setName(clientName);
+        channel.setName(channelName);
         channel.setReceiver(receiver);
 
         ProtocolStack protocolStack = ProtocolStackFactory.buildStack(hostName);

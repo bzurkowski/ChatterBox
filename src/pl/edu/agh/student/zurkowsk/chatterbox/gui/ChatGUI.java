@@ -1,21 +1,23 @@
 package pl.edu.agh.student.zurkowsk.chatterbox.gui;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 public class ChatGUI extends JFrame {
 
     private ChatActionBar actionBar;
 
-    private ChatRoomsList chatRoomList;
+    private ChatRoomList chatRoomList;
+
+    private UserList userList;
 
     private SenderPanel senderPanel;
 
-    private JTextArea messagesTextArea;
+    private MessagesArea messagesArea;
 
     public ChatGUI()
     {
@@ -25,16 +27,16 @@ public class ChatGUI extends JFrame {
     private void initGUI()
     {
         actionBar    = new ChatActionBar();
-        chatRoomList = new ChatRoomsList();
+        chatRoomList = new ChatRoomList();
+        userList     = new UserList();
         senderPanel  = new SenderPanel();
+        messagesArea = new MessagesArea();
 
-        messagesTextArea = new JTextArea();
-        messagesTextArea.setEnabled(false);
-
-        add(actionBar,        BorderLayout.NORTH);
-        add(chatRoomList,    BorderLayout.WEST);
-        add(senderPanel,      BorderLayout.SOUTH);
-        add(messagesTextArea, BorderLayout.CENTER);
+        add(actionBar,    BorderLayout.NORTH);
+        add(chatRoomList, BorderLayout.WEST);
+        add(userList,     BorderLayout.EAST);
+        add(senderPanel,  BorderLayout.SOUTH);
+        add(messagesArea, BorderLayout.CENTER);
 
         pack();
 
@@ -79,7 +81,8 @@ public class ChatGUI extends JFrame {
         return JOptionPane.showInputDialog(this, "Enter a name for new chat room:");
     }
 
-    public String getSelectedChatRoomName() {
+    public String getSelectedChatRoomName()
+    {
         Object selectedValue = chatRoomList.getSelectedValue();
 
         if (selectedValue != null) {
@@ -88,11 +91,18 @@ public class ChatGUI extends JFrame {
         return null;
     }
 
-    public void addChatRoom(String chatRoomName) {
+    public void addChatRoom(String chatRoomName)
+    {
         chatRoomList.addChatRoom(chatRoomName);
     }
 
-    public void removeChatRoom(String chatRoomName) {
+    public void removeChatRoom(String chatRoomName)
+    {
         chatRoomList.removeChatRoom(chatRoomName);
+    }
+
+    public void updateUserList(List<String> usernames)
+    {
+        userList.updateUsers(usernames);
     }
 }

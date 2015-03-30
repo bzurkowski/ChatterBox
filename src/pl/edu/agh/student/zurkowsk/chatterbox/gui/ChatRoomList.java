@@ -5,18 +5,18 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Set;
 
-public class ChatRoomsList extends JList {
+public class ChatRoomList extends JList {
 
     DefaultListModel<String> listModel;
 
-    public ChatRoomsList()
+    public ChatRoomList()
     {
         listModel = new DefaultListModel<String>();
 
-        initPanel();
+        initList();
     }
 
-    private void initPanel()
+    private void initList()
     {
         setModel(listModel);
 

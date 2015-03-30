@@ -1,6 +1,7 @@
 package pl.edu.agh.student.zurkowsk.chatterbox.handlers;
 
 import pl.edu.agh.student.zurkowsk.chatterbox.client.ChatClient;
+import pl.edu.agh.student.zurkowsk.chatterbox.client.ChatRoom;
 import pl.edu.agh.student.zurkowsk.chatterbox.gui.ChatGUI;
 
 import javax.swing.event.ListSelectionEvent;
@@ -15,7 +16,13 @@ public class ChatSelectionHandler extends ChatActionHandler implements ListSelec
     @Override
     public void valueChanged(ListSelectionEvent e) {
         String chatRoomName = gui.getSelectedChatRoomName();
-        client.setCurrentChannel(chatRoomName);
+
+        ChatRoom chatRoom = client.getChatRoom(chatRoomName);
+
+        if (chatRoom != null) {
+            gui.updateUserList(chatRoom.getUsers());
+            client.setCurrentChatRoom(chatRoom);
+        }
     }
 
     @Override

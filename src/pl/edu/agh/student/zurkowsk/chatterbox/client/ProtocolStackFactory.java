@@ -15,7 +15,9 @@ public class ProtocolStackFactory {
 
         Protocol udpProtocol = new UDP();
 
-        udpProtocol.setValue("mcast_group_addr", InetAddress.getByName(hostName));
+        if (hostName != null) {
+            udpProtocol.setValue("mcast_group_addr", InetAddress.getByName(hostName));
+        }
 
         stack.addProtocol(udpProtocol)
                 .addProtocol(new PING())
