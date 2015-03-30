@@ -25,18 +25,6 @@ public class UserList extends JList {
         setPreferredSize(new Dimension(200, 100));
     }
 
-    public void addUser(String username)
-    {
-        if (!listModel.contains(username)) {
-            listModel.addElement(username);
-        }
-    }
-
-    public void removeUser(String username)
-    {
-        listModel.removeElement(username);
-    }
-
     public void updateUsers(List<String> usernames)
     {
         listModel.clear();

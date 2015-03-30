@@ -3,7 +3,7 @@ package pl.edu.agh.student.zurkowsk.chatterbox.gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Set;
+import java.util.*;
 
 public class ChatRoomList extends JList {
 
@@ -33,5 +33,16 @@ public class ChatRoomList extends JList {
 
     public void removeChatRoom(String chatRoomName) {
         listModel.removeElement(chatRoomName);
+    }
+
+    public void updateChatRooms(java.util.List<String> chatRoomNames)
+    {
+        listModel.clear();
+
+        if (chatRoomNames == null) return;
+
+        for (String chatRoomName : chatRoomNames) {
+            addChatRoom(chatRoomName);
+        }
     }
 }

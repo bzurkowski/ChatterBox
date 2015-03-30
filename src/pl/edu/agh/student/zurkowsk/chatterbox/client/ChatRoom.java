@@ -4,18 +4,17 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
-import pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatAction;
-import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatAction.parseFrom;
 import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.ChatMessage;
 
 public class ChatRoom extends ReceiverAdapter {
+
+    private ChatClient client = null;
 
     private JChannel channel = null;
 
@@ -25,20 +24,19 @@ public class ChatRoom extends ReceiverAdapter {
 
     private List<ChatReceivedMessage> messages = null;
 
-    private List<ChatRoomObserver> chatRoomObservers;
-
     private List<String> users = null;
 
-    public ChatRoom(String channelName) throws Exception
+
+    public ChatRoom(ChatClient client, String channelName) throws Exception
     {
+        this.client = client;
+
         this.channelName = channelName;
 
         state = new LinkedList<ChatAction>();
         users = new ArrayList<String>();
 
         messages = new LinkedList<ChatReceivedMessage>();
-
-        chatRoomObservers = new LinkedList<ChatRoomObserver>();
 
         channel = ChannelFactory.buildChannel(channelName, channelName, this);
     }
@@ -77,11 +75,6 @@ public class ChatRoom extends ReceiverAdapter {
         }
     }
 
-    public void addChatRoomObserver(ChatRoomObserver observer)
-    {
-        chatRoomObservers.add(observer);
-    }
-
     @Override
     public void receive(Message msg) {
         ChatMessage chatMessage = null;
@@ -99,22 +92,21 @@ public class ChatRoom extends ReceiverAdapter {
         ChatReceivedMessage message = new ChatReceivedMessage(username, messageContent);
         messages.add(message);
 
-        for (ChatRoomObserver observer : chatRoomObservers) {
-            System.out.println("observer!");
-            observer.messageReceived(channelName, message);
-        }
+        client.notifyMessageReceived(channelName, message);
     }
 
     public void addUser(String username)
     {
         if (!users.contains(username)) {
             users.add(username);
+            client.notifyStateChanged();
         }
     }
 
     public void removeUser(String username)
     {
         users.remove(username);
+        client.notifyStateChanged();
     }
 
     public List<String> getUsers() {
@@ -123,10 +115,6 @@ public class ChatRoom extends ReceiverAdapter {
 
     public List<ChatAction> getState() {
         return state;
-    }
-
-    public void addMessage(ChatReceivedMessage message) {
-        messages.add(message);
     }
 
     public List<ChatReceivedMessage> getMessages() {

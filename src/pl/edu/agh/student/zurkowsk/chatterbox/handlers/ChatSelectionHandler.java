@@ -7,7 +7,7 @@ import pl.edu.agh.student.zurkowsk.chatterbox.gui.ChatGUI;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class ChatSelectionHandler extends ChatActionHandler implements ListSelectionListener, Runnable {
+public class ChatSelectionHandler extends ChatActionHandler implements ListSelectionListener {
 
     public ChatSelectionHandler(ChatGUI gui, ChatClient client) {
         super(gui, client);
@@ -25,10 +25,5 @@ public class ChatSelectionHandler extends ChatActionHandler implements ListSelec
 
             client.setCurrentChatRoom(currentChatRoom);
         }
-    }
-
-    @Override
-    public void run() {
-
     }
 }

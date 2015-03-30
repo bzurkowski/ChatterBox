@@ -6,9 +6,9 @@ import pl.edu.agh.student.zurkowsk.chatterbox.client.ChatRoom;
 import pl.edu.agh.student.zurkowsk.chatterbox.client.ChatRoomObserver;
 import pl.edu.agh.student.zurkowsk.chatterbox.gui.ChatGUI;
 
-public class ChatMessageHandler extends ChatActionHandler implements ChatRoomObserver {
+public class ChatRoomHandler extends ChatActionHandler implements ChatRoomObserver {
 
-    public ChatMessageHandler(ChatGUI gui, ChatClient client) {
+    public ChatRoomHandler(ChatGUI gui, ChatClient client) {
         super(gui, client);
     }
 
@@ -20,6 +20,17 @@ public class ChatMessageHandler extends ChatActionHandler implements ChatRoomObs
 
         if (currentChatRoom.getChannelName().equals(channelName)) {
             gui.addMessage(message);
+        }
+    }
+
+    @Override
+    public void stateChanged() {
+        ChatRoom currentChatRoom = client.getCurrentChatRoom();
+
+        gui.updateChatRoomList(client.getChatRoomNames());
+
+        if (currentChatRoom != null) {
+            gui.updateUserList(currentChatRoom.getUsers());
         }
     }
 }

@@ -73,6 +73,11 @@ public class ChatGUI extends JFrame {
         chatRoomList.addListSelectionListener(listener);
     }
 
+    public void setUser(String nickname)
+    {
+        setTitle("ChatterBox - " + nickname);
+    }
+
     public String getMessageContent()
     {
         return senderPanel.messageTextField.getText();
@@ -98,14 +103,14 @@ public class ChatGUI extends JFrame {
         chatRoomList.addChatRoom(chatRoomName);
     }
 
-    public void removeChatRoom(String chatRoomName)
-    {
-        chatRoomList.removeChatRoom(chatRoomName);
-    }
-
     public void updateUserList(List<String> usernames)
     {
         userList.updateUsers(usernames);
+    }
+
+    public void updateChatRoomList(List<String> chatRoomNames)
+    {
+        chatRoomList.updateChatRooms(chatRoomNames);
     }
 
     public void updateMessages(List<ChatReceivedMessage> messages)
@@ -116,5 +121,10 @@ public class ChatGUI extends JFrame {
     public void addMessage(ChatReceivedMessage message)
     {
         messagesArea.addMessage(message);
+    }
+
+    public void resetMessageTextField()
+    {
+        senderPanel.messageTextField.setText(null);
     }
 }

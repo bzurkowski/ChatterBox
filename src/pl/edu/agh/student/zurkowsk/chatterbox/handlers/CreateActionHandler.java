@@ -3,6 +3,7 @@ package pl.edu.agh.student.zurkowsk.chatterbox.handlers;
 import pl.edu.agh.student.zurkowsk.chatterbox.client.ChatClient;
 import pl.edu.agh.student.zurkowsk.chatterbox.gui.ChatGUI;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,6 +21,7 @@ public class CreateActionHandler extends ChatActionHandler implements ActionList
 
         if (chatRoomName != null && !chatRoomName.isEmpty()) {
             new Thread(this).start();
+            gui.addChatRoom(chatRoomName);
         }
     }
 
@@ -27,7 +29,6 @@ public class CreateActionHandler extends ChatActionHandler implements ActionList
     public void run() {
         try {
             client.joinChatRoom(chatRoomName);
-            gui.addChatRoom(chatRoomName);
         } catch (Exception e) {
             e.printStackTrace();
         }

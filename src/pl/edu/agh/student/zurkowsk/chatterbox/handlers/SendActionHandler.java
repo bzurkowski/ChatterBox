@@ -2,7 +2,6 @@ package pl.edu.agh.student.zurkowsk.chatterbox.handlers;
 
 
 import pl.edu.agh.student.zurkowsk.chatterbox.client.ChatClient;
-import pl.edu.agh.student.zurkowsk.chatterbox.client.ChatRoom;
 import pl.edu.agh.student.zurkowsk.chatterbox.gui.ChatGUI;
 
 import java.awt.event.ActionEvent;
@@ -17,6 +16,10 @@ public class SendActionHandler extends ChatActionHandler implements ActionListen
     @Override
     public void actionPerformed(ActionEvent e) {
         String messageContent = gui.getMessageContent();
-        client.sendMessage(messageContent);
+
+        if (!messageContent.isEmpty()) {
+            client.sendMessage(messageContent);
+            gui.resetMessageTextField();
+        }
     }
 }

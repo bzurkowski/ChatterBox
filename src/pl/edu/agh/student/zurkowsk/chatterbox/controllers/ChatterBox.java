@@ -10,16 +10,21 @@ public class ChatterBox {
 
     private ChatClient client;
 
-    public ChatterBox(ChatGUI gui, ChatClient client)
-    {
-        this.gui    = gui;
+    public ChatterBox(ChatGUI gui, ChatClient client) throws Exception {
         this.client = client;
+        this.gui    = gui;
+
+        gui.setUser(client.getNickname());
 
         initEventListeners();
+
+        client.start();
     }
 
     private void initEventListeners()
     {
+        client.addChatRoomObserver(new ChatRoomHandler(gui, client));
+
         gui.addCreateButtonListener(new CreateActionHandler(gui, client));
         gui.addJoinButtonListener  (new JoinActionHandler(gui, client));
         gui.addLeaveButtonListener (new LeaveActionHandler(gui, client));
@@ -27,7 +32,5 @@ public class ChatterBox {
         gui.addChatRoomListSelectionListener(new ChatSelectionHandler(gui, client));
 
         gui.addSendButtonListener(new SendActionHandler(gui, client));
-
-        client.addChatRoomObserver(new ChatMessageHandler(gui, client));
     }
 }
