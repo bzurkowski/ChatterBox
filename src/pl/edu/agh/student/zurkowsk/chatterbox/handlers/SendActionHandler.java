@@ -22,5 +22,7 @@ public class SendActionHandler extends ChatActionHandler implements ActionListen
     public void run() {
         String messageContent = gui.getMessageContent();
         client.sendMessage(messageContent);
+        gui.updateMessages(client.getCurrentChatRoom().getMessages());
+
     }
 }

@@ -13,11 +13,13 @@ import static pl.edu.agh.student.zurkowsk.chatterbox.protos.ChatOperationProtos.
 
 public class ChatRoom {
 
-    private JChannel channel;
+    private JChannel channel = null;
 
     private String channelName;
 
-    private List<ChatAction> state;
+    private List<ChatAction> state = null;
+
+    private List<ChatReceivedMessage> messages = null;
 
     private List<String> users = null;
 
@@ -27,6 +29,8 @@ public class ChatRoom {
 
         state = new LinkedList<ChatAction>();
         users = new ArrayList<String>();
+
+        messages = new LinkedList<ChatReceivedMessage>();
 
         channel = ChannelFactory.buildChannel(channelName, channelName, null);
     }
@@ -51,7 +55,7 @@ public class ChatRoom {
         return false;
     }
 
-    public void sendMessage(String messageContent)
+    public void sendMessage(String username, String messageContent)
     {
         ChatMessage message = ChatMessage.newBuilder()
                 .setMessage(messageContent).build();
@@ -60,6 +64,7 @@ public class ChatRoom {
 
         try {
             channel.send(new Message(null, null, messageBytes));
+            messages.add(new ChatReceivedMessage(username, messageContent));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,5 +88,13 @@ public class ChatRoom {
 
     public List<ChatAction> getState() {
         return state;
+    }
+
+    public void addMessage(ChatReceivedMessage message) {
+        messages.add(message);
+    }
+
+    public List<ChatReceivedMessage> getMessages() {
+        return messages;
     }
 }

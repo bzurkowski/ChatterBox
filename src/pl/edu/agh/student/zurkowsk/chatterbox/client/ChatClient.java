@@ -29,8 +29,6 @@ public class ChatClient {
 
         if (chatRooms.containsKey(chatRoomName)) {
             chatRoom = chatRooms.get(chatRoomName);
-
-
         } else {
             chatRoom = new ChatRoom(chatRoomName);
             chatRooms.put(chatRoomName, chatRoom);
@@ -59,14 +57,18 @@ public class ChatClient {
     public void sendMessage(String chatRoomName, String messageContent)
     {
         if (chatRooms.containsKey(chatRoomName)) {
-            chatRooms.get(chatRoomName).sendMessage(messageContent);
+            ChatRoom chatRoom = chatRooms.get(chatRoomName);
+
+            if (chatRoom != null) {
+                chatRoom.sendMessage(nickname, messageContent);
+            }
         }
     }
 
     public void sendMessage(String messageContent)
     {
         if (currentChatRoom != null) {
-            currentChatRoom.sendMessage(messageContent);
+            currentChatRoom.sendMessage(nickname, messageContent);
         }
     }
 

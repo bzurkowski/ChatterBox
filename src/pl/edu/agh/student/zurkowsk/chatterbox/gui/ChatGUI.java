@@ -1,5 +1,7 @@
 package pl.edu.agh.student.zurkowsk.chatterbox.gui;
 
+import pl.edu.agh.student.zurkowsk.chatterbox.client.ChatReceivedMessage;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -104,5 +106,10 @@ public class ChatGUI extends JFrame {
     public void updateUserList(List<String> usernames)
     {
         userList.updateUsers(usernames);
+    }
+
+    public void updateMessages(List<ChatReceivedMessage> messages)
+    {
+        messagesArea.updateMessages(messages);
     }
 }
